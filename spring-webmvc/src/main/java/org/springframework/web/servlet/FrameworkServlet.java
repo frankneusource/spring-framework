@@ -973,6 +973,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	}
 
 	/**
+	 * 处理真实的请求，在spring mvc的基础servlet中，所有的服务方法都调用了这个方法
 	 * Process this request, publishing an event regardless of the outcome.
 	 * <p>The actual event handling is performed by the abstract
 	 * {@link #doService} template method.
@@ -995,6 +996,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		initContextHolders(request, localeContext, requestAttributes);
 
 		try {
+			//调用子类的方法进行业务处理
 			doService(request, response);
 		}
 		catch (ServletException | IOException ex) {

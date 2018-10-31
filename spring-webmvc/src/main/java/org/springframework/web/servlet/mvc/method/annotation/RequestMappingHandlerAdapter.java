@@ -774,6 +774,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 		return true;
 	}
 
+	//真实的执行逻辑，在这里通过{@code invokeHandlerMethod}调用真实controller中方法，这里根据session进行加锁
 	@Override
 	protected ModelAndView handleInternal(HttpServletRequest request,
 			HttpServletResponse response, HandlerMethod handlerMethod) throws Exception {

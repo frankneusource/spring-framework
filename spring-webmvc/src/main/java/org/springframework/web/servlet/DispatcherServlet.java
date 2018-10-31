@@ -902,8 +902,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 
 	/**
-	 * Exposes the DispatcherServlet-specific request attributes and delegates to {@link #doDispatch}
-	 * for the actual dispatching.
+	 * 写入固定的http请求属性，并将请求转发给{@link #doDispatch}进行实际的业务处理
 	 */
 	@Override
 	protected void doService(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -985,12 +984,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	}
 
 	/**
-	 * Process the actual dispatching to the handler.
-	 * <p>The handler will be obtained by applying the servlet's HandlerMappings in order.
-	 * The HandlerAdapter will be obtained by querying the servlet's installed HandlerAdapters
-	 * to find the first that supports the handler class.
-	 * <p>All HTTP methods are handled by this method. It's up to HandlerAdapters or handlers
-	 * themselves to decide which methods are acceptable.
+	 * 根据顺序，从HandlerMapping上查找应该使用的handler。所有的http请求都从这个方法进行处理，根据HandlerAdapters和handlers自身决定谁来处理这个请求
 	 * @param request current HTTP request
 	 * @param response current HTTP response
 	 * @throws Exception in case of any kind of processing failure
@@ -1029,18 +1023,16 @@ public class DispatcherServlet extends FrameworkServlet {
 						return;
 					}
 				}
-
+				//前置拦截器
 				if (!mappedHandler.applyPreHandle(processedRequest, response)) {
 					return;
 				}
-
-				// Actually invoke the handler.
+				// 实际调用入口，具体的controller方法
 				mv = ha.handle(processedRequest, response, mappedHandler.getHandler());
-
 				if (asyncManager.isConcurrentHandlingStarted()) {
 					return;
 				}
-
+				//后置拦截器
 				applyDefaultViewName(processedRequest, mv);
 				mappedHandler.applyPostHandle(processedRequest, response, mv);
 			}
