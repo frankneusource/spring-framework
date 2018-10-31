@@ -510,61 +510,46 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	@Override
 	public void refresh() throws BeansException, IllegalStateException {
+		//对监控器加锁，防止对容器操作的时候有其他对容器进行修改的操作进行，注册关闭回调钩子的时候以及关闭的时候也会加锁
 		synchronized (this.startupShutdownMonitor) {
-			// Prepare this context for refreshing.
+			//记录容器启动时机，标记已启动状态，处理配置文件中占位符
 			prepareRefresh();
-
-			// Tell the subclass to refresh the internal bean factory.
+			// 配置文件会被解析成bean定义，注册到BeanFactory中。此时的bean没有初始化，只是提取出了配置信息，提取出的配置信息保存到注册中心，是个BeanName->BeanDefintion的Map
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
-
-			// Prepare the bean factory for use in this context.
+			//设置 BeanFactory 的类加载器，添加几个 BeanPostProcessor，手动注册几个特殊的 bean
 			prepareBeanFactory(beanFactory);
-
 			try {
-				// Allows post-processing of the bean factory in context subclasses.
+				// Bean如果实现了此接口BeanFactoryPostProcessor，容器初始化后spring会调用里面的postProcessBeanFactory方法，子类在这里进行扩展，进行bean加载注册后，初始化前的一些特殊操作
 				postProcessBeanFactory(beanFactory);
-
-				// Invoke factory processors registered as beans in the context.
+				// 调用 BeanFactoryPostProcessor 各个实现类的 postProcessBeanFactory(factory) 方法
 				invokeBeanFactoryPostProcessors(beanFactory);
-
-				// Register bean processors that intercept bean creation.
+				// 注册 BeanPostProcessor 的实现类
 				registerBeanPostProcessors(beanFactory);
-
-				// Initialize message source for this context.
+				// 初始化当前 ApplicationContext 的 MessageSource
 				initMessageSource();
-
-				// Initialize event multicaster for this context.
+				// 初始化当前ApplicationContext事件广播器
 				initApplicationEventMulticaster();
-
-				// Initialize other special beans in specific context subclasses.
+				// 子类可以在此进行扩展，在初始化单例beans之前初始化特殊的bean
 				onRefresh();
-
-				// Check for listener beans and register them.
+				// 注册时间监听器
 				registerListeners();
-
-				// Instantiate all remaining (non-lazy-init) singletons.
+				// 初始化所有单例bean，除lazy-init的bean
 				finishBeanFactoryInitialization(beanFactory);
-
-				// Last step: publish corresponding event.
+				// 广播事件
 				finishRefresh();
 			}
-
 			catch (BeansException ex) {
 				if (logger.isWarnEnabled()) {
 					logger.warn("Exception encountered during context initialization - " +
 							"cancelling refresh attempt: " + ex);
 				}
-
-				// Destroy already created singletons to avoid dangling resources.
+				// 销毁已经初始化的单例bean，释放资源
 				destroyBeans();
-
 				// Reset 'active' flag.
 				cancelRefresh(ex);
-
 				// Propagate exception to caller.
 				throw ex;
 			}
-
 			finally {
 				// Reset common introspection caches in Spring's core, since we
 				// might not ever need metadata for singleton beans anymore...
@@ -574,8 +559,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	}
 
 	/**
-	 * Prepare this context for refreshing, setting its startup date and
-	 * active flag as well as performing any initialization of property sources.
+	 * 创建 Bean 容器前的准备工作。记录启动时间，将 active 属性设置为 true，closed 属性设置为 false，它们都是 AtomicBoolean 类型
 	 */
 	protected void prepareRefresh() {
 		this.startupDate = System.currentTimeMillis();
@@ -590,14 +574,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				logger.debug("Refreshing " + getDisplayName());
 			}
 		}
-
 		// Initialize any placeholder property sources in the context environment
 		initPropertySources();
-
-		// Validate that all properties marked as required are resolvable
-		// see ConfigurablePropertyResolver#setRequiredProperties
+		// 校验Xml文件
 		getEnvironment().validateRequiredProperties();
-
 		// Allow for the collection of early ApplicationEvents,
 		// to be published once the multicaster is available...
 		this.earlyApplicationEvents = new LinkedHashSet<>();

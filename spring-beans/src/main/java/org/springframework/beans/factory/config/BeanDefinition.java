@@ -83,7 +83,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	// Modifiable attributes
 
 	/**
-	 * Set the name of the parent definition of this bean definition, if any.
+	 * 设置父 Bean，这里涉及到 bean 继承，不是 java 继承。
 	 */
 	void setParentName(@Nullable String parentName);
 
