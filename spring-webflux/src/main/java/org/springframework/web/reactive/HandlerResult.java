@@ -27,7 +27,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 
 /**
- * Represent the result of the invocation of a handler or a handler method.
+ * 表示调用处理程序或处理程序方法的结果。
  *
  * @author Rossen Stoyanchev
  * @since 5.0

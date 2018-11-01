@@ -31,6 +31,7 @@ import org.springframework.web.server.ServerWebExchange;
 public interface ResourceTransformerChain {
 
 	/**
+	 * 返回用于解析正在转换的资源的ResourceResolverChain。这可能需要解析相关的资源，例如链接到其他资源。
 	 * Return the {@code ResourceResolverChain} that was used to resolve the
 	 * {@code Resource} being transformed. This may be needed for resolving
 	 * related resources, e.g. links to other resources.
@@ -38,6 +39,7 @@ public interface ResourceTransformerChain {
 	ResourceResolverChain getResolverChain();
 
 	/**
+	 * 转换给定的资源。
 	 * Transform the given resource.
 	 * @param exchange the current exchange
 	 * @param resource the candidate resource to transform

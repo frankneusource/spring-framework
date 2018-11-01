@@ -168,7 +168,11 @@ public abstract class AbstractHandlerMapping extends ApplicationObjectSupport
 		return this.beanName != null ? "'" + this.beanName + "'" : "<unknown>";
 	}
 
-
+	/**
+	 * 获取具体的handler
+	 * @param exchange current server exchange
+	 * @return
+	 */
 	@Override
 	public Mono<Object> getHandler(ServerWebExchange exchange) {
 		return getHandlerInternal(exchange).map(handler -> {

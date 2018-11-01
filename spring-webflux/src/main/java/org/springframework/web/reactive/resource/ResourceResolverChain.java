@@ -34,6 +34,7 @@ import org.springframework.web.server.ServerWebExchange;
 public interface ResourceResolverChain {
 
 	/**
+	 * 将提供的请求和请求路径解析为存在于其中一个给定资源位置下的资源。
 	 * Resolve the supplied request and request path to a {@link Resource} that
 	 * exists under one of the given resource locations.
 	 * @param exchange the current exchange

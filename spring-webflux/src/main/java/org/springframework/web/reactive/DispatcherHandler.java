@@ -116,7 +116,12 @@ public class DispatcherHandler implements WebHandler, ApplicationContextAware {
 		initStrategies(applicationContext);
 	}
 
-
+	/**
+	 * beansOfTypeIncludingAncestors这个方法来通过解析和反射等方法来收集context中所有的bean
+	 * 可以通过注解或者xml配置Spring Bean，Springboot都是注解一般，来创建ioc容器
+	 * 下面代码中的mappingBeans adapterBeans beans 都是如此，创建好之后来让之前最初创建的三个List变量集合引用，并且对他们进行排序。
+	 * @param context
+	 */
 	protected void initStrategies(ApplicationContext context) {
 		Map<String, HandlerMapping> mappingBeans = BeanFactoryUtils.beansOfTypeIncludingAncestors(
 				context, HandlerMapping.class, true, false);
@@ -138,7 +143,15 @@ public class DispatcherHandler implements WebHandler, ApplicationContextAware {
 		AnnotationAwareOrderComparator.sort(this.resultHandlers);
 	}
 
-
+	/**
+	 * 实现了package org.springframework.web.server中的WebHandler中的接口
+	 * 这里可以看到先拿到了请求中的request，然后接下来就是Flux开始遍历我们的handlerMappings
+	 * 从ServerWebExchange中获得相应的Handle,会调用invokeHandler(exchange, handler)来匹配真正要使用的那个handlerAdapter，来执行handle方法处理请求逻辑
+	 * return handlerAdapter.handle(exchange, handler);
+	 * 这个过程中，别的类已经处理完了，并且返回了结果，返回一个Mono<HandlerResult>
+	 * @param exchange the current server exchange
+	 * @return
+	 */
 	@Override
 	public Mono<Void> handle(ServerWebExchange exchange) {
 		if (this.handlerMappings == null) {

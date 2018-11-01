@@ -25,14 +25,8 @@ import org.springframework.web.server.ServerErrorException;
 import org.springframework.web.server.ServerWebExchange;
 
 /**
- * Context to assist with binding request data onto Objects and provide access
- * to a shared {@link Model} with controller-specific attributes.
- *
- * <p>Provides  methods to create a {@link WebExchangeDataBinder} for a specific
- * target, command Object to apply data binding and validation to, or without a
- * target Object for simple type conversion from request values.
- *
- * <p>Container for the default model for the request.
+ * 帮助将请求数据绑定到对象上并提供对具有控制器特定属性的共享模型的访问的上下文。
+ * 提供为特定目标创建WebExchangeDataBinder的方法，命令对象将数据绑定和验证应用，或者没有目标对象用于从请求值进行简单类型转换。用于请求的默认模型的容器。
  *
  * @author Rossen Stoyanchev
  * @since 5.0
