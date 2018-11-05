@@ -59,7 +59,7 @@ public interface RequestUpgradeStrategy {
 	}
 
 	/**
-	 * Upgrade to a WebSocket session and handle it with the given handler.
+	 * 升级一个WebSocket session然后用给定的handler处理
 	 * @param exchange the current exchange
 	 * @param webSocketHandler handler for the WebSocket session
 	 * @param subProtocol the selected sub-protocol got the handler
