@@ -31,6 +31,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.util.Assert;
 
 /**
+ * 将http请求与reactor-netty关联起来
  * Adapt {@link HttpHandler} to the Reactor Netty channel handling function.
  *
  * @author Stephane Maldini

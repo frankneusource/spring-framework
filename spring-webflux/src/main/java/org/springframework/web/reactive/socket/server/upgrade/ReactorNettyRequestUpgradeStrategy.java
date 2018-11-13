@@ -75,7 +75,7 @@ public class ReactorNettyRequestUpgradeStrategy implements RequestUpgradeStrateg
 		HttpServerResponse reactorResponse = ((AbstractServerHttpResponse) response).getNativeResponse();
 		HandshakeInfo handshakeInfo = handshakeInfoFactory.get();
 		NettyDataBufferFactory bufferFactory = (NettyDataBufferFactory) response.bufferFactory();
-
+		//此处调用reactor-netty的发送websocket函数，完成请求回调与netty的reactor线程的绑定
 		return reactorResponse.sendWebsocket(subProtocol, this.maxFramePayloadLength,
 				(in, out) -> {
 					ReactorNettyWebSocketSession session =

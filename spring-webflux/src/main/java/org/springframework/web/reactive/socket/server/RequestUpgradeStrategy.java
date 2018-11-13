@@ -28,6 +28,7 @@ import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.server.ServerWebExchange;
 
 /**
+ * 根据底层运行容器情况，将http同步请求升级为异步IO请求
  * A strategy for upgrading an HTTP request to a WebSocket session depending
  * on the underlying network runtime.
  *
